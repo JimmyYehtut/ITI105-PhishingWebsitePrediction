@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestClassifier  # Example model
 from sklearn.preprocessing import StandardScaler
 # Streamlit app title
 st.title('ITI105 Team Project')
-st.subheader('Phishing web site Machine Learning Prediction App')
+st.subheader('Machine Learning Project for Phishing web site prediction App')
 
 if 'clear_output' not in st.session_state:
     st.session_state.clear_output = False
