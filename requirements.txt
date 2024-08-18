@@ -1,6 +1,7 @@
 joblib==1.4.2
 matplotlib==3.9.2
 plotly==5.23.0
+Cython==0.29.37
 numpy==1.26.4
 pandas==2.2.1
 scikit-learn==1.2.2
