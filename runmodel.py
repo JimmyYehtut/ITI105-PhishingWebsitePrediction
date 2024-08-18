@@ -16,6 +16,12 @@ if 'clear_output' not in st.session_state:
 # Function to clear specific elements
 def clear_previous_output():
     st.session_state.clear_output = True
+
+# Load the pre-uploaded dataset
+default_file_path = 'https://raw.githubusercontent.com/JimmyYehtut/ITI105Files/main/test_dataset.csv'
+df_new = pd.read_csv(default_file_path)
+
+
 # Upload the CSV file
 uploaded_file = st.file_uploader("Choose a CSV file with website data", type="csv")
 row_index = None
@@ -50,7 +56,34 @@ if uploaded_file is not None:
     else:
         st.write("The dataset does not have enough columns after removing the first and last columns.")
 else:
-    st.error("ERROR!!! Please upload a CSV file to continue.")
+    # st.error("ERROR!!! Please upload a CSV file to continue.")
+    st.write("Using pre-uploaded sample data:")
+    df = df_new
+    # Extract the URL column to display in the dropdown
+    url_list = df['url'].tolist()
+
+    # Display the dropdown with URL options
+    selected_url = st.selectbox("Select URL for Prediction", url_list)
+
+    # Display the list fo model
+    selected_model = st.selectbox("Select Model for Prediction", ['Random Forest', 'Logistic Regression', 'SVM', 'KNN', 'Decision Tree'])
+
+
+    # Remove the first (non-numeric) and last (target) columns
+    if df.shape[1] > 2:  # Ensure there are enough columns to remove
+        features_df = df.iloc[:, 1:-1]  # Drop first and last columns
+       
+
+        # Select a row for prediction
+        # row_index = st.number_input("Select a row index for prediction", min_value=0, max_value=len(features_df)-1, step=1)
+        row_index = df[df['url'] == selected_url].index[0]
+        # Display the selected row's features in a table
+        selected_row = df.iloc[row_index, :]
+        st.subheader("List of selected website features:")
+        st.table(selected_row.to_frame().T)
+        
+    else:
+        st.write("The dataset does not have enough columns after removing the first and last columns.")
 
 if st.button("Predict"):
 
